@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:my_app/FrontEnd/elements/components/asset_image_widget.dart';
 import 'package:my_app/FrontEnd/elements/components/button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,17 +32,17 @@ class Landing extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ButtonSatu(
                 buttonText: 'Login',
                 onPressed: () => Navigator.pushNamed(context, '/login'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              ButtonSatu(
+              const ButtonSatu(
                 buttonText: 'Sign Up',
                 backgroundColor: bases,
                 childColor: primary,

@@ -8,6 +8,10 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:my_app/FrontEnd/elements/screens/routes/home_fragments/shopping_cart.dart';
 // import 'package:my_app/FrontEnd/elements/screens/routes/home_fragments/profile_screen.dart';
 import 'package:my_app/FrontEnd/elements/components/asset_image_widget.dart';
+import 'package:my_app/PinjamNada/Screens/dashboard.dart';
+import 'package:my_app/PinjamNada/Screens/myInstrument.dart';
+import 'package:my_app/PinjamNada/Screens/myLoan.dart';
+import 'package:my_app/dto/dto_uts.dart';
 import 'package:my_app/main.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -23,12 +27,12 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 1;
 
   final List<Widget> _screens = [
-    History(),
-    HomeScreen(),
-    CartScreen(),
+    const MyInstrument(),
+    const Dashboard(),
+    const MyLoan(),
   ];
 
-  final List<String> _pageTitles = ['History', 'Home', 'Cart'];
+  final List<String> _pageTitles = ['My Instrument', 'Dashboard', 'My Loan'];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -53,15 +57,30 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: primary,
         title: Text(
           _pageTitles[selectedIndex],
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
         ), // Update title dynamically // Hide leading icon on ProfileScreen
         actions: [
           IconButton(
             // Only show profile button if not on ProfileScreen
-            icon: Icon(Icons.person, color: Colors.white,),
-            onPressed: () {},
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+          IconButton(
+            // Only show profile button if not on ProfileScreen
+            icon: const Icon(
+              Icons.notifications_active,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/add-instrument');
+            },
           ),
         ],
       ),
@@ -69,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.blueGrey[300],
         child: Column(
           children: [
-            DrawerHeader(
-              child: const AssetImageWidget(
+            const DrawerHeader(
+              child: AssetImageWidget(
                 imagePath: 'assets/images/Logo.png',
                 width: 100,
                 height: 100,
@@ -78,40 +97,60 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ExpansionTile(
-              leading: Icon(Icons.arrow_right, size: 28), // Indent the submenu
-              title: Text('DANAN | 4C'), // Submenu title
+              leading:
+                  const Icon(Icons.arrow_right, size: 28), // Indent the submenu
+              title: const Text('DANAN | 4C'), // Submenu title
               children: [
                 ListTile(
-                  leading: Icon(Icons.assignment_rounded, size: 28),
-                  title: Text('TUGAS API'),
+                  leading: const Icon(Icons.assignment_rounded, size: 28),
+                  title: const Text('TUGAS API'),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, '/news');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.assignment_rounded, size: 28),
-                  title: Text('TUGAS SQFLite'), // Submenu item
+                  leading: const Icon(Icons.assignment_rounded, size: 28),
+                  title: const Text('TUGAS SQFLite'), // Submenu item
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.pushNamed(context, '/sqflite');
                   },
                 ),
+                ListTile(
+                  leading: const Icon(Icons.image, size: 28),
+                  title: const Text('TUGAS API Gambar'), // Submenu item
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/datas-screen');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.image, size: 28),
+                  title: const Text('UTS'), // Submenu item
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/customer-service-screen');
+                  },
+                ),
               ],
             ),
             ListTile(
-              leading: Icon(Icons.home, size: 28),
-              title: Text('About Us'),
+              leading: const Icon(Icons.home, size: 28),
+              title: const Text('About Us'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/about-us');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.home, size: 28),
+              title: const Text('Profile'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.home, size: 28),
-              title: Text('Profile'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, size: 28),
-              title: Text('SETTINGS'),
+              leading: const Icon(Icons.settings, size: 28),
+              title: const Text('SETTINGS'),
               onTap: () {},
             ),
           ],
@@ -119,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _screens[selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
-        items: <Widget>[
+        items: const <Widget>[
           Icon(Icons.history, size: 30),
           Icon(Icons.home, size: 30),
           Icon(Icons.shopping_cart, size: 30),
@@ -128,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         buttonBackgroundColor: secondary,
         height: 50,
-        animationDuration: Duration(milliseconds: 500),
+        animationDuration: const Duration(milliseconds: 500),
         index: selectedIndex,
         onTap: _onItemTapped,
       ),

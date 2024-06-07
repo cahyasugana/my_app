@@ -11,13 +11,13 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final Map<MenuItem, int> cartItems = {
     MenuItem(
-      image: AssetImage('assets/images/food1.jpg'),
+      image: const AssetImage('assets/images/food1.jpg'),
       title: 'Product 1',
       description: 'Description of Product 1',
       price: 20000,
     ): 2, // Product 1, 2 items
     MenuItem(
-      image: AssetImage('assets/images/food1.jpg'),
+      image: const AssetImage('assets/images/food1.jpg'),
       title: 'Product 3',
       description: 'Description of Product 3',
       price: 15000,
@@ -63,7 +63,7 @@ class _CartScreenState extends State<CartScreen> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 'Total: Rp. ${_calculateTotal()}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -73,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
               onPressed: () {
                 // Implement your checkout logic here
               },
-              child: Text('Checkout'),
+              child: const Text('Checkout'),
             ),
           ],
         ),
@@ -123,17 +123,17 @@ class _CartItemState extends State<CartItem> {
         children: [
           IconButton(
             onPressed: widget.onDelete,
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
           Image(image: widget.itemImage, width: 100, height: 200),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.itemName,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
                   'Rp. ${widget.itemPrice.toString()}',
@@ -142,15 +142,15 @@ class _CartItemState extends State<CartItem> {
                   children: [
                     IconButton(
                       onPressed: widget.onDecrease,
-                      icon: Icon(Icons.remove),
+                      icon: const Icon(Icons.remove),
                     ),
                     Text(
                       '${widget.itemCount}',
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                      style: const TextStyle(fontStyle: FontStyle.italic),
                     ),
                     IconButton(
                       onPressed: widget.onIncrease,
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                     ),
                   ],
                 ),

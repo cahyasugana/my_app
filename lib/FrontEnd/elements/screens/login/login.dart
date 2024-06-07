@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:my_app/FrontEnd/elements/components/asset_image_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/FrontEnd/elements/components/button.dart';
@@ -27,14 +27,14 @@ void _validateLogin(BuildContext context) {
   if (username.isEmpty || password.isEmpty) {
     // Menampilkan pesan kesalahan jika username atau password kosong
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Please enter username and password'),
       ),
     );
   } else if (username != validUsername || password != validPassword) {
     // Menampilkan pesan kesalahan jika username atau password tidak sesuai
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Invalid username or password'),
       ),
     );
@@ -67,31 +67,31 @@ void _validateLogin(BuildContext context) {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 MyTextField(
                     controller: usernameController,
                     hintText: 'Enter your username',
                     obscureText: false),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 MyTextField(
                     controller: passwordController,
                     hintText: 'Enter your password',
                     obscureText: true),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: Text('Forgot password?'),
+                      child: const Text('Forgot password?'),
                     ),
                   ],
                 ),

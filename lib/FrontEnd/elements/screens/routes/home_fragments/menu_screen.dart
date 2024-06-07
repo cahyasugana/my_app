@@ -29,21 +29,21 @@ class _MenuScreenState extends State<MenuScreen> {
             SliverAppBar(
               automaticallyImplyLeading: true, // Show back button automatically
               centerTitle: true,
-              title: Text('Menu'),
+              title: const Text('Menu'),
               floating: true,
               snap: true,
               elevation: 0,
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(
+                preferredSize: const Size.fromHeight(
                    40.0), // Adjust height according to AppBar + SearchBox height
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: TextField(
                         controller: searchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Cari menu...',
                           prefixIcon: Icon(Icons.search),
                         ),
@@ -102,7 +102,7 @@ class _MenuScreenState extends State<MenuScreen> {
         child: Stack(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),
               ),
@@ -117,14 +117,14 @@ class _MenuScreenState extends State<MenuScreen> {
               top: 5,
               right: 5,
               child: Container(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   'Rp. ${menuItem.price.toStringAsFixed(2)}', // Display price here
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -137,7 +137,7 @@ class _MenuScreenState extends State<MenuScreen> {
               left: 0,
               right: 0,
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color:
                       Colors.black.withOpacity(0.5), // Adjust opacity as needed
@@ -147,16 +147,16 @@ class _MenuScreenState extends State<MenuScreen> {
                   children: [
                     Text(
                       menuItem.title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white, // Adjust text color as needed
                         fontWeight: FontWeight.bold,
                         fontSize: 18, // Adjust title font size
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       menuItem.description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white, // Adjust text color as needed
                         fontSize: 16, // Adjust description font size
                       ),
@@ -182,7 +182,7 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ElevatedButton(
         onPressed: () {
           // Implement filter action here

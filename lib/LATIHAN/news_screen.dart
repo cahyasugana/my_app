@@ -44,7 +44,7 @@ class _NewsScreenState extends State<NewsScreen> {
             false; // Variable to track visibility of photo input field
 
         return AlertDialog(
-          title: Text('Add News'),
+          title: const Text('Add News'),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return Column(
@@ -52,7 +52,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 children: [
                   TextField(
                     controller: _titleController,
-                    decoration: InputDecoration(labelText: 'Title'),
+                    decoration: const InputDecoration(labelText: 'Title'),
                     onChanged: (value) {
                       setState(() {
                         _title = value;
@@ -61,7 +61,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   ),
                   TextField(
                     controller: _bodyController,
-                    decoration: InputDecoration(labelText: 'Body'),
+                    decoration: const InputDecoration(labelText: 'Body'),
                     onChanged: (value) {
                       setState(() {
                         _body = value;
@@ -71,7 +71,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   if (_showPhotoTextField)
                     TextField(
                       controller: _photoController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText:
                               'Link Gambar'), // Add label for photo input
                       onChanged: (value) {
@@ -104,12 +104,12 @@ class _NewsScreenState extends State<NewsScreen> {
                       photo: _showPhotoTextField ? _photoController.text : '');
                   // Handle the created news as needed (optional)
                   await Future.delayed(
-                      Duration(seconds: 2)); // Menunggu 2 detik
+                      const Duration(seconds: 2)); // Menunggu 2 detik
                   // Refresh the news list after deletion
                   setState(() {
                     _news = DataService.fetchNews();
                   });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Berhasil menambah berita.'),
                   ));
                   print('News created: ${createdNews.title}');
@@ -125,7 +125,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to create news')));
                 }
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
             TextButton(
               onPressed: () {
@@ -135,7 +135,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   _photoController.clear(); // Clear photo input field
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -152,13 +152,13 @@ class _NewsScreenState extends State<NewsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit News'),
+          title: const Text('Edit News'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 onChanged: (value) {
                   setState(() {
                     _title = value;
@@ -167,7 +167,7 @@ class _NewsScreenState extends State<NewsScreen> {
               ),
               TextField(
                 controller: bodyController,
-                decoration: InputDecoration(labelText: 'Body'),
+                decoration: const InputDecoration(labelText: 'Body'),
                 onChanged: (value) {
                   setState(() {
                     _body = value;
@@ -187,7 +187,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   setState(() {
                     _news = DataService.fetchNews();
                   });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Berhasil memperbarui berita.'),
                   ));
                 } catch (e) {
@@ -196,13 +196,13 @@ class _NewsScreenState extends State<NewsScreen> {
                   // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to update news')));
                 }
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -213,7 +213,7 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Latihan API'),),
+      appBar: AppBar(title: const Text('Latihan API'),),
       body: Column(
         children: [
           Padding(
@@ -223,17 +223,17 @@ class _NewsScreenState extends State<NewsScreen> {
                 Expanded(
                   child: TextField(
                     controller: _idController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Enter News ID',
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: _searchNewsById,
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: _addNews,
                 ),
               ],
@@ -250,7 +250,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       itemBuilder: (context, index) {
                         final post = snapshot.data![index];
                         if (_id.isNotEmpty && post.id != _id) {
-                          return SizedBox.shrink(); // Hide if not matching ID
+                          return const SizedBox.shrink(); // Hide if not matching ID
                         }
                         // Define the color based on the index
                         Color? tileColor =
@@ -282,20 +282,20 @@ class _NewsScreenState extends State<NewsScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.edit),
+                                  icon: const Icon(Icons.edit),
                                   onPressed: () {
                                     _showEditDialog(post);
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete),
+                                  icon: const Icon(Icons.delete),
                                   onPressed: () async {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text('Konfirmasi'),
-                                          content: Text(
+                                          title: const Text('Konfirmasi'),
+                                          content: const Text(
                                               'Apakah Anda yakin ingin menghapus berita ini?'),
                                           actions: <Widget>[
                                             TextButton(
@@ -312,7 +312,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                                   });
                                                   // Refresh the news list after deletion
                                                   ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
+                                                      .showSnackBar(const SnackBar(
                                                     content: Text(
                                                         'Berhasil menghapus berita.'),
                                                   ));
@@ -323,14 +323,14 @@ class _NewsScreenState extends State<NewsScreen> {
                                                   // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete news')));
                                                 }
                                               },
-                                              child: Text('Ya'),
+                                              child: const Text('Ya'),
                                             ),
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.of(context)
                                                     .pop(); // Tutup dialog konfirmasi
                                               },
-                                              child: Text('Tidak'),
+                                              child: const Text('Tidak'),
                                             ),
                                           ],
                                         );

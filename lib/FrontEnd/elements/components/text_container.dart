@@ -83,11 +83,11 @@ class _ExpandableTextState extends State<ExpandableText> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 _isExpanded
-                    ? Text(
+                    ? const Text(
                         'Show Less',
                         style: TextStyle(color: Colors.blue),
                       )
-                    : Text(
+                    : const Text(
                         'Show More',
                         style: TextStyle(color: Colors.blue),
                       ),

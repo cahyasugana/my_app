@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/dto/appDTO.dart';
 import 'package:my_app/services/data_helper.dart';
-import 'package:my_app/FrontEnd/elements/components/text_container.dart';
+// import 'package:my_app/FrontEnd/elements/components/text_container.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -153,7 +153,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Latihan SQFLite'),
+        title: const Text('Latihan SQFLite'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

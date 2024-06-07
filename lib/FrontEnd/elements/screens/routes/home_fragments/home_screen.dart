@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_app/FrontEnd/elements/screens/routes/home_fragments/menu_screen.dart';
@@ -9,49 +9,49 @@ class HomeScreen extends StatelessWidget {
 
   List<MenuItem> menuItems = [
     MenuItem(
-      image: AssetImage('assets/images/food1.jpg'),
+      image: const AssetImage('assets/images/food1.jpg'),
       title: 'Grilled Salmon',
       description: 'Freshly grilled salmon served with vegetables.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food2.png'),
+      image: const AssetImage('assets/images/food2.png'),
       title: 'Margherita Pizza',
       description: 'Classic margherita pizza with tomato and mozzarella.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food3.png'),
+      image: const AssetImage('assets/images/food3.png'),
       title: 'Caesar Salad',
       description: 'Crisp romaine lettuce with Caesar dressing and croutons.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food4.png'),
+      image: const AssetImage('assets/images/food4.png'),
       title: 'Pasta Carbonara',
       description: 'Spaghetti with creamy carbonara sauce and bacon bits.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food4.png'),
+      image: const AssetImage('assets/images/food4.png'),
       title: 'Pasta Carbonara',
       description: 'Spaghetti with creamy carbonara sauce and bacon bits.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food4.png'),
+      image: const AssetImage('assets/images/food4.png'),
       title: 'Pasta Carbonara',
       description: 'Spaghetti with creamy carbonara sauce and bacon bits.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food4.png'),
+      image: const AssetImage('assets/images/food4.png'),
       title: 'Pasta Carbonara',
       description: 'Spaghetti with creamy carbonara sauce and bacon bits.',
       price: 20000,
     ),
     MenuItem(
-      image: AssetImage('assets/images/food4.png'),
+      image: const AssetImage('assets/images/food4.png'),
       title: 'Pasta Carbonara',
       description: 'Spaghetti with creamy carbonara sauce and bacon bits.',
       price: 20000,
@@ -63,11 +63,11 @@ class HomeScreen extends StatelessWidget {
     List<Widget> carouselItems = [
       Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(8),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('assets/images/food1.jpg'),
             fit: BoxFit.cover, // Sesuaikan dengan kebutuhanmu
           ),
@@ -75,11 +75,11 @@ class HomeScreen extends StatelessWidget {
       ),
       Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(8),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('assets/images/food2.png'),
             fit: BoxFit.cover, // Sesuaikan dengan kebutuhanmu
           ),
@@ -87,11 +87,11 @@ class HomeScreen extends StatelessWidget {
       ),
       Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(8),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('assets/images/food3.png'),
             fit: BoxFit.cover, // Sesuaikan dengan kebutuhanmu
           ),
@@ -99,11 +99,11 @@ class HomeScreen extends StatelessWidget {
       ),
       Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(8),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('assets/images/food4.png'),
             fit: BoxFit.cover, // Sesuaikan dengan kebutuhanmu
           ),
@@ -114,7 +114,7 @@ class HomeScreen extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          Row(
+          const Row(
             children: [
               SizedBox(
                 width: 8,
@@ -138,8 +138,8 @@ class HomeScreen extends StatelessWidget {
               initialPage: 0,
               enableInfiniteScroll: true,
               autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
               autoPlayCurve: Curves.fastOutSlowIn,
               scrollDirection: Axis.horizontal,
             ),
@@ -150,8 +150,8 @@ class HomeScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 14, top: 14, left: 8),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 14, top: 14, left: 8),
                 child: Text(
                   'Our Menu',
                   style: TextStyle(
@@ -170,8 +170,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 8),
                   child: Text(
                     'Lihat semua',
                     style: TextStyle(
@@ -203,14 +203,14 @@ class HomeScreen extends StatelessWidget {
                   ),
                   title: Text(
                     menuItems[index].title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   subtitle: Text(
                     menuItems[index].description,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),
