@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:my_app/endpoints/endpoints.dart';
+import 'package:my_app/PinjamNada/endpoints/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/dto/dto_uts.dart';

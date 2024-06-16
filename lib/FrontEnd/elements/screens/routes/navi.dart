@@ -72,16 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pushNamed(context, '/profile');
             },
           ),
-          IconButton(
-            // Only show profile button if not on ProfileScreen
-            icon: const Icon(
-              Icons.notifications_active,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/add-instrument');
-            },
-          ),
         ],
       ),
       drawer: Drawer(
@@ -90,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             const DrawerHeader(
               child: AssetImageWidget(
-                imagePath: 'assets/images/Logo.png',
+                imagePath: 'assets/images/logoPinjamNadaPutih.png',
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,

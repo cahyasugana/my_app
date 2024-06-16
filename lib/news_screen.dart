@@ -1,7 +1,7 @@
 //FINAL
 import 'package:flutter/material.dart';
 import 'package:my_app/dto/news.dart';
-import 'package:my_app/services/data_service.dart';
+import 'package:my_app/PinjamNada/services/data_service.dart';
 import 'package:my_app/FrontEnd/elements/components/text_container.dart';
 
 class NewsScreen extends StatefulWidget {

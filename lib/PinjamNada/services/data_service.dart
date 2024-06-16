@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_app/PinjamNada/dto/Instrument.dart';
+import 'package:my_app/PinjamNada/dto/user.dart';
 import 'dart:convert';
 import 'package:my_app/dto/news.dart';
 import 'package:my_app/dto/dto_uts.dart';
-import 'package:my_app/endpoints/endpoints.dart';
+import 'package:my_app/PinjamNada/endpoints/endpoints.dart';
+import 'package:my_app/utils/constants.dart';
+import 'package:my_app/utils/secure_storage_util.dart';
 
 class DataService {
   //API Method
@@ -153,7 +158,8 @@ class DataService {
   //UTS CRUD
   //READ
   static Future<List<CustomerService>> fetchAllCustomerService() async {
-    final response = await http.get(Uri.parse(Endpoints.customerServiceWithNIM));
+    final response =
+        await http.get(Uri.parse(Endpoints.customerServiceWithNIM));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return (data['datas'] as List<dynamic>)
@@ -165,9 +171,7 @@ class DataService {
     }
   }
 
-
   //CREATE
-
 
   static Future<void> deleteCustomerService(
     int idCustomerService,
@@ -184,6 +188,117 @@ class DataService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete Data');
+    }
+  }
+
+  //PINJAM NADA
+  //Authorization
+  static Future<http.Response> sendLoginData(
+      String username, String password) async {
+    final url = Uri.parse(Endpoints.login);
+    final data = {'username': username, 'password': password};
+
+    final response = await http.post(
+      url,
+      body: data,
+    );
+    return response;
+  }
+
+  static Future<http.Response?> getUserInfo(String accessToken) async {
+    try {
+      final Uri url = Uri.parse(Endpoints.decodeToken);
+      final Map<String, String> headers = {
+        'Authorization': 'Bearer $accessToken'
+      };
+
+      final http.Response response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        // Handle error conditions (e.g., invalid access token, unauthorized access)
+        print(
+            'Failed to retrieve user information. Status code: ${response.statusCode}');
+        return null;
+      }
+    } on http.ClientException catch (e) {
+      // Handle specific HTTP client errors
+      print('Client error: $e');
+      return null;
+    } catch (e) {
+      // Handle other errors (e.g., network issues, unexpected exceptions)
+      print('Error fetching user information: $e');
+      return null;
+    }
+  }
+
+  static Future<http.Response> getUserAdditionalInfo(int userID) async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:5000/api/v1/profile/read/$userID'));
+    return response;
+  }
+
+  // static Future<http.Response> logoutData() async {
+  //   final url = Uri.parse(Endpoints.logout);
+  //   final String? accessToken =
+  //       await SecureStorageUtil.storage.read(key: tokenStoreName);
+  //   debugPrint("logout with $accessToken");
+
+  //   final response = await http.post(url, headers: {
+  //     'Context-Type': 'application/json',
+  //     'Authorization': 'Bearer $accessToken',
+  //   });
+  //   return response;
+  // }
+
+  //INSTRUMENNTS RELATED
+  static Future<List<Instruments>> fetchAllAvailableInstruments() async {
+    final response =
+        await http.get(Uri.parse(Endpoints.fetchAllAvailableInstruments));
+    debugPrint('${response.statusCode}');
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      debugPrint(data['instruments'][0]['description']);
+      return (data['instruments'] as List<dynamic>)
+          .map((item) => Instruments.fromJson(item))
+          .toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  static Future<List<Instruments>> fetchExcludingUser(int userId) async {
+    final String url =
+        '${Endpoints.fetchAllAvailableInstruments}/$userId'; // Assuming the endpoint structure
+
+    final response = await http.get(Uri.parse(url));
+    debugPrint('${response.statusCode}');
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      debugPrint(data['instruments'][0]['description']);
+      return (data['instruments'] as List<dynamic>)
+          .map((item) => Instruments.fromJson(item))
+          .toList();
+    } else {
+      throw Exception('Failed to load instruments');
+    }
+  }
+
+  static Future<List<Instruments>> fetchInstrumentsByID(int userId) async {
+    final String url =
+        '${Endpoints.fetchInstrumentsByID}/$userId'; // Assuming the endpoint structure
+
+    final response = await http.get(Uri.parse(url));
+    debugPrint('${response.statusCode}');
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      debugPrint(data['instruments'][0]['description']);
+      return (data['instruments'] as List<dynamic>)
+          .map((item) => Instruments.fromJson(item))
+          .toList();
+    } else {
+      throw Exception('Failed to load instruments');
     }
   }
 }

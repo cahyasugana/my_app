@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_app/endpoints/endpoints.dart';
+import 'package:my_app/PinjamNada/endpoints/endpoints.dart';
 import 'package:my_app/main.dart';
 
 class FormScreen extends StatefulWidget {

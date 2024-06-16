@@ -1,196 +1,212 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_app/PinjamNada/cubit/my_instruments/my_instruments_cubit.dart';
+import 'package:my_app/PinjamNada/cubit/user/user_cubit.dart';
+import 'package:my_app/PinjamNada/endpoints/endpoints.dart'; // import UserCubit
+import 'package:my_app/PinjamNada/Screens/instrumentDetail.dart'; // import InstrumentDetail
 
-class MyInstrument extends StatelessWidget {
+class MyInstrument extends StatefulWidget {
   const MyInstrument({Key? key}) : super(key: key);
+
+  @override
+  _MyInstrumentState createState() => _MyInstrumentState();
+}
+
+class _MyInstrumentState extends State<MyInstrument> {
+  late UserCubit _userCubit;
+  bool _showAvailable = true; // Single CheckBox for filtering instruments
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _userCubit from context
+    _userCubit = BlocProvider.of<UserCubit>(context);
+
+    // Ensure data is fetched when the screen is initialized
+    context
+        .read<MyInstrumentsCubit>()
+        .fetchInstrumentsByID(userId: _userCubit.state.userID);
+  }
+
+  Future<void> _refreshData() async {
+    // Trigger the fetch function in the InstrumentsCubit to refresh data
+    await context
+        .read<MyInstrumentsCubit>()
+        .fetchInstrumentsByID(userId: _userCubit.state.userID);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: BlocBuilder<MyInstrumentsCubit, MyInstrumentsState>(
+        builder: (context, state) {
+          if (state.instruments.isEmpty) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return RefreshIndicator(
+              onRefresh: _refreshData,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: _showAvailable,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _showAvailable = value ?? true;
+                              });
+                            },
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Search...',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          DropdownButton<String>(
+                            icon: Icon(Icons.arrow_drop_down),
+                            items: <String>[
+                              'Filter 1',
+                              'Filter 2',
+                              'Filter 3',
+                              'Filter 4'
+                            ].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {},
+                            hint: Text('Filter'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: state.instruments.length,
+                      itemBuilder: (context, index) {
+                        var instrument = state.instruments[index];
+
+                        // Filter instruments based on availability status
+                        if (_showAvailable && instrument.availabilityStatus == 0) {
+                          return SizedBox.shrink(); // Hide not available instruments
+                        }
+                        if (!_showAvailable && instrument.availabilityStatus == 1) {
+                          return SizedBox.shrink(); // Hide available instruments
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InstrumentDetail(instrument: instrument),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              color: instrument.availabilityStatus == 1
+                                  ? Colors.green[100]
+                                  : Colors.red[100],
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      instrument.instrumentName,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(15),
+                                          child: FadeInImage.assetNetwork(
+                                            placeholder: 'assets/images/placeholder.png',
+                                            image: '${Endpoints.staticImage}/${instrument.image}',
+                                            fit: BoxFit.cover,
+                                            width: 100,
+                                            height: 100,
+                                            imageErrorBuilder: (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/placeholder.png',
+                                                fit: BoxFit.cover,
+                                                width: 100,
+                                                height: 100,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Lokasi: ${instrument.location}',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                'Deskripsi: ${instrument.description}',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, '/add-instrument');
         },
-        child: Icon(Icons.add), // Tambahkan ikon di sini atau sesuai kebutuhan
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  DropdownButton<String>(
-                    icon: Icon(Icons.arrow_drop_down),
-                    items: <String>[
-                      'Filter 1',
-                      'Filter 2',
-                      'Filter 3',
-                      'Filter 4'
-                    ].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {},
-                    hint: Text('Filter'),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              children: [
-                Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Beautiful Scenery',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.asset(
-                                'assets/images/food1.jpg',
-                                fit: BoxFit.cover,
-                                width: 100,
-                                height: 100,
-                              ),
-                            ),
-                            SizedBox(width: 16), // Jarak antara gambar dan teks
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'Pemilik: John Doe',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Lokasi: New York, USA',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Deskripsi: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                          height:
-                              16), // Tambahkan jarak di bawah row jika diperlukan
-                    ],
-                  ),
-                ),
-                Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Beautiful Scenery',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.asset(
-                                'assets/images/food1.jpg',
-                                fit: BoxFit.cover,
-                                width: 100,
-                                height: 100,
-                              ),
-                            ),
-                            SizedBox(width: 16), // Jarak antara gambar dan teks
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'Pemilik: John Doe',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Lokasi: New York, USA',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Deskripsi: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                          height:
-                              16), // Tambahkan jarak di bawah row jika diperlukan
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+        child: Icon(Icons.add),
       ),
     );
   }

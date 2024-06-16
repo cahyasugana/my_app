@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/LATIHAN/UTS/form_customer_service_screen.dart';
-import 'package:my_app/endpoints/endpoints.dart';
-import 'package:my_app/services/data_service.dart';
+import 'package:my_app/PinjamNada/endpoints/endpoints.dart';
+import 'package:my_app/PinjamNada/services/data_service.dart';
 import 'package:my_app/FrontEnd/elements/components/bottom_up_transition.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
