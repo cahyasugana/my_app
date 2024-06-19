@@ -11,8 +11,14 @@ import 'package:my_app/FrontEnd/elements/components/asset_image_widget.dart';
 import 'package:my_app/PinjamNada/Screens/dashboard.dart';
 import 'package:my_app/PinjamNada/Screens/myInstrument.dart';
 import 'package:my_app/PinjamNada/Screens/myLoan.dart';
+import 'package:my_app/PinjamNada/cubit/auth/auth_cubit.dart';
+import 'package:my_app/PinjamNada/cubit/instruments/instruments_cubit.dart';
+import 'package:my_app/PinjamNada/cubit/loan/loan_cubit.dart';
+import 'package:my_app/PinjamNada/cubit/my_instruments/my_instruments_cubit.dart';
 import 'package:my_app/dto/dto_uts.dart';
 import 'package:my_app/main.dart';
+import 'package:my_app/PinjamNada/cubit/user/user_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
@@ -25,6 +31,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 1;
+  late AuthCubit _authCubit;
+  late UserCubit _userCubit;
+  late InstrumentsCubit _instrumentsCubit;
+  late LoanCubit _loanCubit;
+  late MyInstrumentsCubit _myInstrumentsCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _authCubit = BlocProvider.of<AuthCubit>(context);
+    _userCubit = BlocProvider.of<UserCubit>(context);
+    _instrumentsCubit = BlocProvider.of<InstrumentsCubit>(context);
+    _loanCubit = BlocProvider.of<LoanCubit>(context);
+    _myInstrumentsCubit = BlocProvider.of<MyInstrumentsCubit>(context);
+    print(_userCubit.roles);
+  }
 
   final List<Widget> _screens = [
     const MyInstrument(),
@@ -142,6 +164,25 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.settings, size: 28),
               title: const Text('SETTINGS'),
               onTap: () {},
+            ),
+            _userCubit.roles == "admin"
+                ? ListTile(
+                    leading: const Icon(Icons.exit_to_app, size: 28),
+                    title: const Text('ADMIN'),
+                    onTap: () {},
+                  )
+                : SizedBox.shrink(),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app, size: 28),
+              title: const Text('Logout'),
+              onTap: () {
+                Navigator.pushNamed(context, '/login');
+                _userCubit.logout();
+                _authCubit.logout();
+                _instrumentsCubit.logout();
+                _loanCubit.logout();
+                _myInstrumentsCubit.logout();
+              },
             ),
           ],
         ),

@@ -40,13 +40,15 @@ class _MyInstrumentState extends State<MyInstrument> {
     return Scaffold(
       body: BlocBuilder<MyInstrumentsCubit, MyInstrumentsState>(
         builder: (context, state) {
-          if (state.instruments.isEmpty) {
-            return Center(child: CircularProgressIndicator());
+          if (state.instruments == null) {
+            return const Center(child: Text('No Data Available (null)'));
+          } else if (state.instruments!.isEmpty) {
+            return const Center(child: Text('No Data Available'));
           } else {
             return RefreshIndicator(
               onRefresh: _refreshData,
               child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -54,15 +56,7 @@ class _MyInstrumentState extends State<MyInstrument> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Checkbox(
-                            value: _showAvailable,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _showAvailable = value ?? true;
-                              });
-                            },
-                          ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
                               decoration: InputDecoration(
@@ -73,9 +67,9 @@ class _MyInstrumentState extends State<MyInstrument> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 16),
+                          const SizedBox(width: 16),
                           DropdownButton<String>(
-                            icon: Icon(Icons.arrow_drop_down),
+                            icon: const Icon(Icons.arrow_drop_down),
                             items: <String>[
                               'Filter 1',
                               'Filter 2',
@@ -88,37 +82,36 @@ class _MyInstrumentState extends State<MyInstrument> {
                               );
                             }).toList(),
                             onChanged: (String? newValue) {},
-                            hint: Text('Filter'),
+                            hint: const Text('Filter'),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: state.instruments.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.instruments!.length,
                       itemBuilder: (context, index) {
-                        var instrument = state.instruments[index];
+                        var instrument = state.instruments![index];
 
                         // Filter instruments based on availability status
-                        if (_showAvailable && instrument.availabilityStatus == 0) {
-                          return SizedBox.shrink(); // Hide not available instruments
+                        if (_showAvailable &&
+                            instrument.availabilityStatus == 0) {
+                          return const SizedBox
+                              .shrink(); // Hide not available instruments
                         }
-                        if (!_showAvailable && instrument.availabilityStatus == 1) {
-                          return SizedBox.shrink(); // Hide available instruments
+                        if (!_showAvailable &&
+                            instrument.availabilityStatus == 1) {
+                          return const SizedBox
+                              .shrink(); // Hide available instruments
                         }
 
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => InstrumentDetail(instrument: instrument),
-                                ),
-                              );
+                              // Your logic for handling onTap
                             },
                             child: Card(
                               elevation: 5,
@@ -127,7 +120,9 @@ class _MyInstrumentState extends State<MyInstrument> {
                               ),
                               color: instrument.availabilityStatus == 1
                                   ? Colors.green[100]
-                                  : Colors.red[100],
+                                  : instrument.availabilityStatus == 2
+                                      ? Colors.yellow[100]
+                                      : Colors.red[100],
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
@@ -135,25 +130,30 @@ class _MyInstrumentState extends State<MyInstrument> {
                                     padding: const EdgeInsets.all(16.0),
                                     child: Text(
                                       instrument.instrumentName,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
                                     child: Row(
                                       children: [
                                         ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                           child: FadeInImage.assetNetwork(
-                                            placeholder: 'assets/images/placeholder.png',
-                                            image: '${Endpoints.staticImage}/${instrument.image}',
+                                            placeholder:
+                                                'assets/images/placeholder.png',
+                                            image:
+                                                '${Endpoints.staticImage}/${instrument.image}',
                                             fit: BoxFit.cover,
                                             width: 100,
                                             height: 100,
-                                            imageErrorBuilder: (context, error, stackTrace) {
+                                            imageErrorBuilder:
+                                                (context, error, stackTrace) {
                                               return Image.asset(
                                                 'assets/images/placeholder.png',
                                                 fit: BoxFit.cover,
@@ -163,21 +163,22 @@ class _MyInstrumentState extends State<MyInstrument> {
                                             },
                                           ),
                                         ),
-                                        SizedBox(width: 16),
+                                        const SizedBox(width: 16),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'Lokasi: ${instrument.location}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 16,
                                                 ),
                                               ),
-                                              SizedBox(height: 8),
+                                              const SizedBox(height: 8),
                                               Text(
                                                 'Deskripsi: ${instrument.description}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 16,
                                                 ),
                                               ),
@@ -187,7 +188,7 @@ class _MyInstrumentState extends State<MyInstrument> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                 ],
                               ),
                             ),
@@ -206,7 +207,7 @@ class _MyInstrumentState extends State<MyInstrument> {
         onPressed: () {
           Navigator.pushNamed(context, '/add-instrument');
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

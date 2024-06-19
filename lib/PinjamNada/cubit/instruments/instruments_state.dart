@@ -2,7 +2,7 @@ part of 'instruments_cubit.dart';
 
 @immutable
 class InstrumentsState {
-  final List<Instruments> instruments;
+  final List<Instruments>? instruments;
 
   const InstrumentsState({
     required this.instruments,

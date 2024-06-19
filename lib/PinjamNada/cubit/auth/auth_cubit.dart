@@ -10,7 +10,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthState(isLoggedIn: true, accessToken: accessToken));
   }
 
-  // void logout(){
-  //   emit(const AuthState(isLoggedIn: false, accessToken: ""));
-  // }
+  void logout(){
+    emit(const AuthState(isLoggedIn: false, accessToken: ""));
+  }
 }

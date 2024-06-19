@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:my_app/FrontEnd/elements/screens/routes/navi.dart';
+import 'package:my_app/navi.dart';
 import 'package:my_app/PinjamNada/cubit/user/user_cubit.dart';
 import 'package:my_app/PinjamNada/endpoints/endpoints.dart';
 

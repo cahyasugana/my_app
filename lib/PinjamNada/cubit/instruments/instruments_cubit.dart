@@ -34,4 +34,8 @@ class InstrumentsCubit extends Cubit<InstrumentsState> {
       // Handle error if needed
     }
   }
+
+  void logout() {
+    emit(const InstrumentsState(instruments: const[]));
+  }
 }

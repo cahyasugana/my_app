@@ -7,9 +7,13 @@ import 'package:my_app/PinjamNada/cubit/user/user_cubit.dart';
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
+  
+
   @override
   Widget build(BuildContext context) {
+  
     return BlocBuilder<UserCubit, UserState>(
+    
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -47,7 +51,7 @@ class Profile extends StatelessWidget {
                     ),
                     ProfileInfoItem(
                       label: 'Username',
-                      value: state.username,
+                      value: state.full_name.toString(),
                       iconData: Icons.person,
                       // No onEdit callback for Username
                       onEdit: null,
@@ -133,10 +137,11 @@ class Profile extends StatelessWidget {
                 String newValue = _editController.text;
                 switch (label) {
                   case 'Email':
-                    userCubit.updateProfile(email: newValue);
+                    userCubit.updateProfile(email: newValue, userID: userCubit.state.userID);
+
                     break;
                   case 'Contact':
-                    userCubit.updateProfile(phone: newValue);
+                    userCubit.updateProfile(phone: newValue, userID: userCubit.state.userID);
                     break;
                   default:
                 }

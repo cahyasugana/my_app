@@ -21,4 +21,8 @@ class MyInstrumentsCubit extends Cubit<MyInstrumentsState> {
       // Handle error if needed
     }
   }
+
+  void logout() {
+    emit( MyInstrumentsState(instruments: const[]));
+  }
 }

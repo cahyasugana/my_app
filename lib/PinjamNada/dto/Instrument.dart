@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
 class Instruments {
   final int instrumentId;
   final int ownerId;
@@ -26,6 +30,7 @@ class Instruments {
   });
 
   factory Instruments.fromJson(Map<String, dynamic> json) {
+    debugPrint (jsonEncode(json));
     return Instruments(
       instrumentId: json['instrument_id'] as int,
       ownerId: json['owner_id'] as int,

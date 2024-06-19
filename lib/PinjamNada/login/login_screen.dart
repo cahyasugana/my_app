@@ -50,16 +50,19 @@ class LoginScreen extends StatelessWidget {
             await DataService.getUserAdditionalInfo(userID);
         if (profileInfoResponse.statusCode == 200) {
           final profileInfo = jsonDecode(profileInfoResponse.body);
-          final email = profileInfo['email'];
-          final full_name = profileInfo['full_name'];
-          final phone = profileInfo['phone'];
-          final profile_picture = profileInfo['profile_picture'];
+          final email = profileInfo['data']['email'];
+          final full_name = profileInfo['data']['full_name'];
+          final phone = profileInfo['data']['phone'];
+          final profile_picture = profileInfo['data']['profile_picture'];
+    
+      
+    
+
 
           // Call UserCubit's login method to update state
-          userCubit.login(
-              roles, userID, username);
+          userCubit.login(roles, userID, username, email, full_name, phone, profile_picture);
 
-          userCubit.updateProfile(email: email, full_name: full_name, phone: phone,profile_picture: profile_picture);
+          // userCubit.updateProfile(email: email, full_name: full_name, phone: phone,profile_picture: profile_picture);
 
           // Navigate to the next screen
           Navigator.pushReplacementNamed(context, "/navi");
@@ -123,8 +126,10 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     SizedBox(width: 20),
                     TextButton(
-                      onPressed: () {},
-                      child: Text('Forgot password?'),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: Text('Register Now'),
                     ),
                   ],
                 ),

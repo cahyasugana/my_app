@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/FrontEnd/elements/screens/routes/home_fragments/home_screen.dart';
-import 'package:my_app/FrontEnd/elements/screens/routes/navi.dart';
+import 'package:my_app/PinjamNada/cubit/loan/loan_cubit.dart';
+import 'package:my_app/navi.dart';
 import 'package:my_app/PinjamNada/Screens/aboutUs.dart';
 import 'package:my_app/PinjamNada/cubit/auth/auth_cubit.dart';
 import 'package:my_app/PinjamNada/cubit/instruments/instruments_cubit.dart';
@@ -14,7 +15,8 @@ import 'package:my_app/PinjamNada/login/landing.dart';
 import 'package:my_app/LATIHAN/UTS/customer_service_screen.dart';
 // import 'package:my_app/FrontEnd/elements/screens/splash.dart';
 import 'package:my_app/LATIHAN/note_screen.dart';
-import 'package:my_app/news_screen.dart';
+import 'package:my_app/PinjamNada/login/register.dart';
+// import 'package:my_app/news_screen.dart';
 import 'package:my_app/LATIHAN/si_api_screen.dart';
 import 'package:my_app/PinjamNada/Screens/addInstrument.dart';
 import 'package:my_app/PinjamNada/Screens/dashboard.dart';
@@ -50,7 +52,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
         BlocProvider<UserCubit>(create: (context) => UserCubit()),
         BlocProvider<InstrumentsCubit>(create: (context) => InstrumentsCubit()),
-        BlocProvider<MyInstrumentsCubit>(create: (context) => MyInstrumentsCubit())
+        BlocProvider<MyInstrumentsCubit>(create: (context) => MyInstrumentsCubit()),
+        BlocProvider<LoanCubit>(create: (context) => LoanCubit()),
       ],
       child: MaterialApp(
         title: 'Restaurant',
@@ -60,18 +63,19 @@ class MyApp extends StatelessWidget {
         initialRoute: '/login',
         debugShowCheckedModeBanner: false,
         routes: {
-          '/news': (context) => const NewsScreen(),
+          // '/news': (context) => const NewsScreen(),
           '/sqflite': (context) => const NoteScreen(),
           '/main': (context) => const MyApp(),
           '/landing': (context) => const Landing(),
-          '/login': (context) => LoginScreen(),
           '/home-screen': (context) => HomeScreen(),
           '/setting-screen': (context) => const SettingScreen(),
           '/datas-screen': (context) => const DatasScreen(),
           '/customer-service-screen': (context) => const UtsScreen(),
           '/about-us': (context) => AboutUs(),
-      
+
           //PINJAM NADA
+          '/register': (context) => RegisterScreen(),
+          '/login': (context) => LoginScreen(),
           '/navi': (context) => MyHomePage(),
           '/profile': (context) => Profile(),
           '/dashboard': (context) => Dashboard(),

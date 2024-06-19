@@ -5,6 +5,8 @@ import 'package:my_app/PinjamNada/dto/user.dart';
 import 'dart:convert';
 import 'package:my_app/dto/news.dart';
 import 'package:my_app/dto/dto_uts.dart';
+import 'package:my_app/PinjamNada/dto/myLoans.dart';
+import 'package:my_app/PinjamNada/dto/loanRequest.dart';
 import 'package:my_app/PinjamNada/endpoints/endpoints.dart';
 import 'package:my_app/utils/constants.dart';
 import 'package:my_app/utils/secure_storage_util.dart';
@@ -233,6 +235,26 @@ class DataService {
     }
   }
 
+  static Future<http.Response> updateUser(
+    int userID,
+    String? email,
+    String? full_name,
+    String? phone,
+  ) async {
+    final body = jsonEncode({
+      'email': email,
+      'full_name': full_name,
+      'phone': phone,
+    });
+    final headers = {"Content-Type": "application/json"};
+
+    final response = await http.post(
+        Uri.parse('${Endpoints.updateProfile}/$userID'),
+        headers: headers,
+        body: body);
+    return response;
+  }
+
   static Future<http.Response> getUserAdditionalInfo(int userID) async {
     final response = await http
         .get(Uri.parse('http://10.0.2.2:5000/api/v1/profile/read/$userID'));
@@ -253,22 +275,23 @@ class DataService {
   // }
 
   //INSTRUMENNTS RELATED
-  static Future<List<Instruments>> fetchAllAvailableInstruments() async {
+  static Future<List<Instruments>?> fetchAllAvailableInstruments() async {
     final response =
         await http.get(Uri.parse(Endpoints.fetchAllAvailableInstruments));
     debugPrint('${response.statusCode}');
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-      debugPrint(data['instruments'][0]['description']);
+      // debugPrint(data['instruments'][0]['description']);
       return (data['instruments'] as List<dynamic>)
           .map((item) => Instruments.fromJson(item))
           .toList();
     } else {
-      throw Exception('Failed to load data');
+      debugPrint('Failed to load data');
+      return null;
     }
   }
 
-  static Future<List<Instruments>> fetchExcludingUser(int userId) async {
+  static Future<List<Instruments>?> fetchExcludingUser(int userId) async {
     final String url =
         '${Endpoints.fetchAllAvailableInstruments}/$userId'; // Assuming the endpoint structure
 
@@ -276,16 +299,17 @@ class DataService {
     debugPrint('${response.statusCode}');
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-      debugPrint(data['instruments'][0]['description']);
+      // debugPrint(data['instruments'][0]['description']);
       return (data['instruments'] as List<dynamic>)
           .map((item) => Instruments.fromJson(item))
           .toList();
     } else {
-      throw Exception('Failed to load instruments');
+      debugPrint('Failed to load instruments');
+      return null;
     }
   }
 
-  static Future<List<Instruments>> fetchInstrumentsByID(int userId) async {
+  static Future<List<Instruments>?> fetchInstrumentsByID(int userId) async {
     final String url =
         '${Endpoints.fetchInstrumentsByID}/$userId'; // Assuming the endpoint structure
 
@@ -293,12 +317,85 @@ class DataService {
     debugPrint('${response.statusCode}');
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-      debugPrint(data['instruments'][0]['description']);
+      // debugPrint(data['instruments'][0]['description']);
       return (data['instruments'] as List<dynamic>)
           .map((item) => Instruments.fromJson(item))
           .toList();
     } else {
+      debugPrint('Failed to load instruments');
+      return null;
+    }
+  }
+
+  // LOAN RELATED
+  // Fungsi untuk mengambil data dari API berdasarkan ID instrument
+  Future<List<RequestLoan>> fetchRequestListById(int instrumentId) async {
+    final response = await http.get(
+      Uri.parse(
+          '${Endpoints.fetchRequestLoan}/$instrumentId'), // Menggunakan query parameter ?id=
+    );
+
+    if (response.statusCode == 200) {
+      // Jika request berhasil, parse data JSON dan buat list dari instrumen
+      List<dynamic> data = jsonDecode(response.body)['list'];
+      print(data);
+      List<RequestLoan> listRequest =
+          data.map((json) => RequestLoan.fromJson(json)).toList();
+      return listRequest;
+    } else {
+      // Jika request gagal, lemparkan exception atau handle error sesuai kebutuhan aplikasi
       throw Exception('Failed to load instruments');
+    }
+  }
+
+// MY Loans
+  Future<List<MyLoans>?> fetchMyLoans(int userId) async {
+    final response = await http.get(
+      Uri.parse(
+          '${Endpoints.myLoan}/$userId'), // Menggunakan query parameter ?id=
+    );
+
+    if (response.statusCode == 200) {
+      // Jika request berhasil, parse data JSON dan buat list dari instrumen
+      List<dynamic> data = jsonDecode(response.body)['list'];
+      print(data);
+      List<MyLoans> listRequest =
+          data.map((json) => MyLoans.fromJson(json)).toList();
+      return listRequest;
+    } else {
+      // Jika request gagal, lemparkan exception atau handle error sesuai kebutuhan aplikasi
+      debugPrint('Failed to load instruments');
+      return null;
+    }
+  }
+
+  static Future<List<Instruments>?> fetchLoans(int userId) async {
+    final response = await http.get(
+      Uri.parse(
+          '${Endpoints.loan}/$userId'), // Menggunakan query parameter ?id=
+    );
+    if (response.statusCode == 200) {
+      // Jika request berhasil, parse data JSON dan buat list dari instrumen
+      List<dynamic> data = jsonDecode(response.body)['instruments'];
+      print(data);
+      List<Instruments> listRequest =
+          data.map((json) => Instruments.fromJson(json)).toList();
+      return listRequest;
+    } else {
+      // Jika request gagal, lemparkan exception atau handle error sesuai kebutuhan aplikasi
+      debugPrint('Failed to load instruments');
+    }
+  }
+
+   Future<void> cancelLoanRequest(int requesterId, int requestId) async {
+    final url = '${Endpoints.pinjamNadaBase}/api/v1/loan/cancel_loan_request/$requesterId/$requestId';
+    try {
+      final response = await http.delete(Uri.parse(url));
+      if (response.statusCode != 200) {
+        throw Exception('Failed to cancel loan request');
+      }
+    } catch (e) {
+      throw Exception('Failed to cancel loan request: $e');
     }
   }
 }
